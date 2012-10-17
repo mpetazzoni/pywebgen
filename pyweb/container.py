@@ -20,6 +20,7 @@ import os.path
 import shutil
 import stat
 
+import processors
 import util
 import versions
 
@@ -88,7 +89,7 @@ class Container(object):
 
     def Generate(self):
         ret = self._versions.Generate(self.source_dir,
-                                      ['HtmlJinja', 'CssYaml'])
+                                      processors.ListProcessors())
         return ret[0], ret[3]
 
     def Versions(self):

@@ -19,6 +19,7 @@ import sys
 import container
 import deploy
 import generator
+import processors
 import odict
 import versions
 
@@ -66,7 +67,7 @@ def generate_cmd(cmdline):
         parser.print_help()
         return 2
 
-    gen = generator.Generator(args[0], ['HtmlJinja', 'CssYaml'])
+    gen = generator.Generator(args[0], processors.ListProcessors())
     gen.Generate(args[1], manifest_path=options.manifest)
     return 0
 
@@ -85,7 +86,7 @@ def vgenerate_cmd(cmdline):
         return 2
 
     gen = versions.VersionnedGenerator(args[1], options.deploy_dir)
-    ts, out, manifest, current = gen.Generate(args[0], ['HtmlJinja', 'CssYaml'])
+    ts, out, manifest, current = gen.Generate(args[0], processors.ListProcessors())
     if current:
         print 'Generated version %s and made current.' % ts
     else:
