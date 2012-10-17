@@ -35,6 +35,10 @@ class _Processor(object):
         """Called after generation of all files has finished."""
         pass
 
+    def OutputFileRename(self, in_path):
+        """Called to compute an output file name from the input file."""
+        return in_path
+
 
 #
 # General processors

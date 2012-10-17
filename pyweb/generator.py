@@ -80,7 +80,7 @@ class Generator(object):
     def _ProcessFile(self, input_path):
         for processor in self._processors:
             if processor.CanProcessFile(input_path):
-                output_path = self._InputToOutput(input_path)
+                output_path = self._InputToOutput(processor.OutputFileRename(input_path))
                 if processor.ProcessFile(input_path, output_path):
                     self._manifest.append(
                         util.PathAsSuffix(output_path, self._output_root))
