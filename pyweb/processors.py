@@ -78,6 +78,37 @@ class HtmlJinjaProcessor(_Processor):
         del self._env
         del self._ctx
 
+class YamlJinjaProcessor(HtmlJinjaProcessor):
+    """Generate HTML from a YAML document to be fed through a Jinja2
+    template. Variables from the YAML document are exported into the Jinja
+    environment to make them available from the template."""
+    def __init__(self):
+        HtmlJinjaProcessor.__init__(self)
+        try:
+            import yaml
+        except ImportError:
+            raise error.MissingPythonModule('yaml')
+
+    def CanProcessFile(self, filename):
+        return filename.endswith('.yaml')
+
+    def ProcessFile(self, in_path, out_path):
+        import yaml
+
+        ctx = dict(self._ctx)
+        for doc in yaml.load_all(util.ReadFileContent(in_path)):
+            ctx.update(doc)
+
+        template = self._env.get_template(ctx['layout'])
+        out_str = template.render(**ctx)
+
+        util.WriteFileContent(out_path, out_str)
+
+        return True
+
+    def OutputFileRename(self, in_path):
+        return in_path.replace('.yaml', '.html')
+
 
 class CssYamlProcessor(_Processor):
     """Generate CSS from a YAML template."""
@@ -134,6 +165,7 @@ class CopyFileProcessor(_Processor):
 
 
 PROCESSORS = {
+    'YamlJinja': YamlJinjaProcessor,
     'HtmlJinja': HtmlJinjaProcessor,
     'CssYaml': CssYamlProcessor,
 }
