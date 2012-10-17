@@ -44,14 +44,17 @@ class HtmlJinjaProcessor(_Processor):
     def __init__(self):
         try:
             import jinja2
+            from jinja2_markdown.filters import markdown
         except ImportError:
             raise error.MissingPythonModule('jinja2')
 
     def StartProcessing(self, ctx):
         import jinja2
+        from jinja2_markdown.filters import markdown
         self._ctx = ctx
         loader = jinja2.FileSystemLoader(ctx['input_root'])
         self._env = jinja2.Environment(loader=loader)
+        self._env.filters['markdown'] = markdown
 
     def CanProcessFile(self, filename):
         return filename.endswith('.html')
