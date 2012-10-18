@@ -144,7 +144,8 @@ class IgnoreProtectedFileProcessor(_Processor):
     """Ignore temporary and hidden files."""
     def CanProcessFile(self, filename):
         base = os.path.basename(filename)
-        if base.startswith('_') or base.startswith('.#') or base.endswith('~'):
+        if base.startswith('_') or base.startswith('.#') \
+                or base.endswith('~') or base.endswith('.swp'):
             return True
         else:
             return False
