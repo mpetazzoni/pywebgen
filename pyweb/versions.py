@@ -18,6 +18,7 @@ versions.
 
 __author__ = 'David Anderson <dave@natulte.net>'
 
+import datetime
 import os
 import os.path
 import re
@@ -105,8 +106,8 @@ class VersionnedGenerator(object):
         os.symlink(ts, link_path)
 
     def Generate(self, input_root, use_processors):
-        ts = time.localtime()
-        ts_str = time.strftime('%Y%m%d-%H%M%S', ts)
+        ts = datetime.datetime.now()
+        ts_str = ts.strftime('%Y%m%d-%H%M%S')
         out_dir = self._SiteLocation(ts_str)
         manifest_file = self._ManifestLocation(ts_str)
 

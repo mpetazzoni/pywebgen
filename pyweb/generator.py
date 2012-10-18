@@ -37,14 +37,14 @@ class Generator(object):
 
     def _Prepare(self, output_root, timestamp, manifest_path):
         self._output_root = os.path.abspath(output_root)
-        timestamp = timestamp or time.localtime()
+        timestamp = timestamp or datetime.datetime.utcnow()
         self._manifest_path = manifest_path
 
         if not os.path.isdir(self._input_root):
             raise MissingInputDirectory(self._input_root)
 
         self._ctx = {
-            'timestamp': time.asctime(timestamp),
+            'timestamp': timestamp,
             'input_root': self._input_root,
             'output_root': output_root
             }

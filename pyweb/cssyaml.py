@@ -167,7 +167,7 @@ def GenerateCss(in_stream, timestamp):
     else:
         vars = {}
 
-    blocks = [_CSS_HEADER % timestamp]
+    blocks = [_CSS_HEADER % timestamp.strftime('%Y-%m-%dT%H:%M:%SZ')]
     for k,v in data.iteritems():
         blocks.extend(_GenerateBlock(_UnescapeKey(k), v, vars))
 
