@@ -7,8 +7,10 @@
 
 __author__ = 'David Anderson <dave@natulte.net>'
 
+import datetime
 import os.path
 import shutil
+import time
 
 import error
 import util
@@ -58,7 +60,11 @@ class HtmlJinjaProcessor(_Processor):
         self._ctx = ctx
         loader = jinja2.FileSystemLoader(ctx['input_root'])
         self._env = jinja2.Environment(loader=loader)
-        self._env.filters['markdown'] = markdown
+        self._env.filters.update({
+            'markdown': markdown,
+            'from_ts': lambda ts=time.time(): datetime.datetime.fromtimestamp(float(ts)),
+            'date_fmt': lambda t=datetime.datetime.utcnow(), f='%C': t.strftime(f),
+        })
 
     def CanProcessFile(self, filename):
         return filename.endswith('.html')
